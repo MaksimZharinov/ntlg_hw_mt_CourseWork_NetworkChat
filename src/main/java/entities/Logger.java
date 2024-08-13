@@ -1,4 +1,11 @@
 package entities;
 
-public class Logger {
+import interfaces.Loggable;
+
+public class Logger implements Loggable {
+
+    @Override
+    public void log(String msg) {
+
+    }
 }

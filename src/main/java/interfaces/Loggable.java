@@ -2,5 +2,5 @@ package interfaces;
 
 public interface Loggable {
 
-    void log();
+    void log(String msg);
 }
