@@ -10,13 +10,19 @@ import java.io.IOException;
 public class PortReader implements Readable {
 
     private int port;
+    private String path;
 
     public int getPort() {
         return port;
     }
 
+    PortReader(String path) {
+        this.path = path;
+        read();
+    }
+
     public void read() {
-        try(BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/settings.txt"))) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
