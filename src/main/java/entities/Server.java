@@ -11,6 +11,7 @@ public class Server {
     private ServerSocket server;
     private DataInputStream in;
     private DataOutputStream out;
+    private String clientName = "default user";
 
     public Server(String path) {
         PortReader portReader = new PortReader(path);
@@ -34,16 +35,12 @@ public class Server {
         return client;
     }
 
-    public String clientName() {
-        String name = null;
-        try {
-            out.writeUTF("Enter your name: ");
-            out.flush();
-            name = in.readUTF();
-        } catch (IOException e) {
-            System.err.println(e);
-        }
-        return name;
+    public void setName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getName() {
+        return clientName;
     }
 
     public void closeClient(Socket client,
@@ -68,6 +65,10 @@ public class Server {
 
     public DataOutputStream getOut() {
         return out;
+    }
+
+    public Socket getClietn() {
+        return client;
     }
 
 }
