@@ -67,7 +67,7 @@ public class Server {
         return out;
     }
 
-    public Socket getClietn() {
+    public Socket getClient() {
         return client;
     }
 
