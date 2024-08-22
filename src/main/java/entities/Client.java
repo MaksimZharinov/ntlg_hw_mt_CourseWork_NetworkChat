@@ -33,6 +33,18 @@ public class Client {
         }
     }
 
+    public void closeClient() throws IOException {
+        in.close();
+        out.close();
+        client.close();
+    }
+
+    public boolean isExit(String command) {
+        if (command.equals("/exit")) {
+            return true;
+        } else return false;
+    }
+
     public Socket getClient() {
         return client;
     }

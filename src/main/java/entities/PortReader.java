@@ -22,11 +22,11 @@ public class PortReader implements Readable {
     }
 
     public void read() {
-        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if(line.contains("port=")) {
+                if (line.contains("port=")) {
                     String[] strings = line.split("=");
                     port = Integer.parseInt(strings[strings.length - 1]);
                 }

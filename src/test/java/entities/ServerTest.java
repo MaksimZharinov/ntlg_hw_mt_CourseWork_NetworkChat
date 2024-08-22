@@ -20,7 +20,11 @@ class ServerTest {
 
     @BeforeEach
     public void setUp() {
-        server = new Server(settings);
+        try {
+            server = new Server(settings);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
     }
 
     @Test
