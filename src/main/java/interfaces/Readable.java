@@ -2,5 +2,5 @@ package interfaces;
 
 public interface Readable {
 
-    void read();
+    boolean read(String path);
 }
