@@ -11,7 +11,7 @@ public class Server {
     private ServerSocket server;
     private DataInputStream in;
     private DataOutputStream out;
-    private String clientName = "default user";
+    private String clientName;
 
     public Server(String path) {
         PortReader portReader = new PortReader(path);
@@ -35,20 +35,25 @@ public class Server {
         return client;
     }
 
-    public void setName(String clientName) {
-        this.clientName = clientName;
+    public void setName(Socket client) {
+        try {
+                out.writeUTF("Enter your name: ");
+                out.flush();
+                clientName = in.readUTF();
+                if(clientName.isEmpty()) clientName = "Default username";
+        } catch (IOException e) {
+            System.err.println(e);
+        }
     }
 
     public String getName() {
         return clientName;
     }
 
-    public void closeClient(Socket client,
-                            BufferedReader in,
-                            BufferedWriter out) {
+    public void closeClient(Socket client) {
         try {
-            in.close();
-            out.close();
+            client.getInputStream().close();
+            client.getOutputStream().close();
             client.close();
         } catch (IOException e) {
             System.err.println(e);
