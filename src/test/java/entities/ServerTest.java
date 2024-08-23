@@ -1,10 +1,11 @@
 package entities;
 
 import org.apache.commons.net.telnet.TelnetClient;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -19,38 +20,72 @@ class ServerTest {
     private Server server;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         try {
             server = new Server(settings);
+            telnetClient = new TelnetClient();
+            telnetClient.connect(host, port);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        try {
+            telnetClient.disconnect();
+            server.closeServer();
         } catch (IOException e) {
             System.err.println(e);
         }
     }
 
     @Test
-    void isConnect() throws IOException {
-        telnetClient = new TelnetClient();
-        telnetClient.connect(host, port);
+    void isConnectTest() {
 
         assertTrue(telnetClient.isConnected());
     }
 
     @Test
-    void connectClient() throws IOException {
-        Client client = new Client(settings);
-        Socket socket = null;
+    void connectClientTest() {
 
-        socket = server.connectClient();
-
-        assertTrue(socket != null);
+        assertTrue(server.connectClient());
     }
 
     @Test
-    void getPort() {
+    void getPortTest() {
 
         int result = server.getPort();
 
         assertEquals(port, result);
     }
 
+    @Test
+    void getClientTest() {
+
+        server.connectClient();
+        Socket result = server.getClient();
+
+        assertNotNull(result);
+    }
+
+    @Test
+    void closeClientTest() {
+
+        server.connectClient();
+        Socket testClient = server.getClient();
+        boolean result = server.closeClient(testClient);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void setNameTest() {
+
+    }
+
+    @Test
+    void getNameTest() {
+
+    }
 }
