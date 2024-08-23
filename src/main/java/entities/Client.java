@@ -33,9 +33,9 @@ public class Client {
 
     public boolean closeClient() {
         try {
+            client.close();
             in.close();
             out.close();
-            client.close();
         } catch (IOException e) {
             System.err.println(e);
             return false;
