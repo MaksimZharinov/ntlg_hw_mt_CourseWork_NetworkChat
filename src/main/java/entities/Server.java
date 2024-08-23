@@ -22,45 +22,66 @@ public class Server {
         System.out.println("Start SERVER in " + port + " port");
     }
 
-    public Socket connectClient() throws IOException {
-        client = server.accept();
-        System.out.println("New user try to connect...");
-        in = new DataInputStream(client.getInputStream());
-        out = new DataOutputStream(client.getOutputStream());
-        return client;
+    public boolean connectClient() {
+        try {
+            client = server.accept();
+            System.out.println("New user is trying to connect...");
+            in = new DataInputStream(client.getInputStream());
+            out = new DataOutputStream(client.getOutputStream());
+        } catch (IOException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
-    public boolean isExit(String command) {
+    private boolean isExit(String command) {
         if (command.equals("/exit")) {
             return true;
         } else return false;
     }
 
-    public void closeClient(Socket client) throws IOException {
-        System.out.println("User is disconnect!");
-        out.writeUTF("Disconnect!");
-        out.flush();
-        client.getInputStream().close();
-        client.getOutputStream().close();
-        client.close();
+    public boolean closeClient(Socket client) {
+        try {
+            System.out.println("User disconnected!");
+            out.writeUTF("/exit");
+            out.flush();
+            client.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
-    public void closeServer() throws IOException {
+    public boolean closeServer() {
         System.out.println("Server is closed!");
-        server.close();
+        try {
+            server.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
-    public void setName() throws IOException {
-        out.writeUTF("Enter your name: ");
-        out.flush();
-        clientName = in.readUTF();
+    public boolean setName() {
+        try {
+            out.writeUTF("Enter your name: ");
+            out.flush();
+            clientName = in.readUTF();
+        } catch (IOException e) {
+            System.err.println(e);
+            return false;
+        }
         if (isExit(clientName)) {
-            closeClient(client);
-            closeServer();
+            boolean close = closeClient(client);
+            if (!close) return false;
         } else if (clientName.isEmpty()) {
             clientName = "Default username";
-            System.out.println(clientName + " is connected!");
+            System.out.println(clientName + " has connected!");
         }
+        return true;
     }
 
     public String getName() {

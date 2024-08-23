@@ -14,8 +14,6 @@ public class Client {
     private BufferedReader keyboard;
     private DataInputStream in;
     private DataOutputStream out;
-    private String command;
-    private String response;
 
     public Client(String path) {
         PortReader portReader = new PortReader(path);
@@ -27,16 +25,22 @@ public class Client {
             client = new Socket(host, port);
             in = new DataInputStream(client.getInputStream());
             out = new DataOutputStream(client.getOutputStream());
-            System.out.println("You are connect in chat!");
+            System.out.println("You are connected!");
         } catch (IOException e) {
             System.err.println(e);
         }
     }
 
-    public void closeClient() throws IOException {
-        in.close();
-        out.close();
-        client.close();
+    public boolean closeClient() {
+        try {
+            in.close();
+            out.close();
+            client.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
     public boolean isExit(String command) {
