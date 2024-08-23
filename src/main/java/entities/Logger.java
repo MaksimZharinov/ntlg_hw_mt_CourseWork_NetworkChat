@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Logger implements Loggable {
 
@@ -25,6 +27,8 @@ public class Logger implements Loggable {
             .appendLiteral(':')
             .appendValue(ChronoField.MINUTE_OF_HOUR,2)
             .toFormatter();
+    private Lock lock = new ReentrantLock();
+
     public Logger(String path) {
         this.path = path;
     }
@@ -37,13 +41,21 @@ public class Logger implements Loggable {
 
     @Override
     public boolean log(String msg) {
-        try (BufferedWriter writer = new BufferedWriter
-                (new FileWriter(path, true))) {
-            LocalDateTime now = LocalDateTime.now();
-            writer.write(name +
-                    " " + now.format(formatter) +
-                    ": " + msg + "\n");
-        } catch (IOException e) {
+        try {
+            lock.lock();
+            try (BufferedWriter writer = new BufferedWriter
+                    (new FileWriter(path, true))) {
+                LocalDateTime now = LocalDateTime.now();
+                writer.write(name +
+                        " " + now.format(formatter) +
+                        ": " + msg + "\n");
+            } catch (IOException e) {
+                System.err.println(e);
+                return false;
+            } finally {
+                lock.unlock();
+            }
+        }catch (Exception e) {
             System.err.println(e);
             return false;
         }
