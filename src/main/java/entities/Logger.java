@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Logger implements Loggable {
 
     private String path;
-    private String name;
+    private String name = "default_name";
     private DateTimeFormatter formatter = new DateTimeFormatterBuilder()
             .appendValue(ChronoField.DAY_OF_MONTH, 2)
             .appendLiteral('.')
