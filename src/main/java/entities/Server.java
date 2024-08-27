@@ -10,8 +10,14 @@ public class Server {
     private int port = -1;
     private Socket client = null;
     private ServerSocket server = null;
-    private String message = null;
-    private String log_message = null;
+
+    public int getPort() {
+        return port;
+    }
+
+    public Socket getClient() {
+        return client;
+    }
 
     public boolean readPort(String settingsFile) {
         if (settingsFile.isEmpty() || settingsFile == null) {
@@ -35,10 +41,6 @@ public class Server {
         } else {
             return false;
         }
-    }
-
-    public int getPort() {
-        return port;
     }
 
     public boolean startServer() {
