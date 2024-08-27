@@ -46,8 +46,8 @@ public class Logger implements Loggable {
             try (BufferedWriter writer = new BufferedWriter
                     (new FileWriter(path, true))) {
                 LocalDateTime now = LocalDateTime.now();
-                writer.write(name +
-                        " " + now.format(formatter) +
+                writer.write(now.format(formatter) +
+                        " " + name +
                         ": " + msg + "\n");
             } catch (IOException e) {
                 System.err.println(e);
