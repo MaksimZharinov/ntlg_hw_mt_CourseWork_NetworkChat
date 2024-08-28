@@ -69,6 +69,7 @@ public class Server {
             if (client == null) {
                 return false;
             } else {
+                System.out.println("New user is connected!");
                 return true;
             }
         } catch (IOException e) {
@@ -81,7 +82,38 @@ public class Server {
         for (Map.Entry<String, PrintWriter> entry : clients.entrySet()) {
             PrintWriter out = entry.getValue();
             out.println(msg);
+            out.flush();
         }
         return true;
+    }
+
+    public boolean closeClient() {
+        if (client != null) {
+            try {
+                client.close();
+                return true;
+            } catch (IOException e) {
+                System.err.println(e);
+                return false;
+            }
+        } else {
+            System.out.println("Client didn't connect");
+            return true;
+        }
+    }
+
+    public boolean closeServer() {
+        if (server != null) {
+            try {
+                server.close();
+                return true;
+            } catch (IOException e) {
+                System.err.println(e);
+                return false;
+            }
+        } else {
+            System.out.println("Server didn't start");
+            return true;
+        }
     }
 }
