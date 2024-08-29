@@ -1,6 +1,9 @@
 package entities;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
@@ -23,11 +26,11 @@ public class Server {
         if (settingsFile.isEmpty() || settingsFile == null) {
             return false;
         }
-        try(BufferedReader reader = new BufferedReader(new FileReader(settingsFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(settingsFile))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if(line.contains("port=")) {
+                if (line.contains("port=")) {
                     String[] strings = line.split("=");
                     port = Integer.parseInt(strings[strings.length - 1]);
                 }
@@ -46,8 +49,7 @@ public class Server {
     public boolean startServer() {
         if (port == -1) {
             return false;
-        }
-        else {
+        } else {
             try {
                 server = new ServerSocket(port);
                 System.out.println("Start SERVER in port: " + port);

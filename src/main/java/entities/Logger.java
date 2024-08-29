@@ -25,7 +25,7 @@ public class Logger implements Loggable {
             .appendLiteral(' ')
             .appendValue(ChronoField.HOUR_OF_DAY, 2)
             .appendLiteral(':')
-            .appendValue(ChronoField.MINUTE_OF_HOUR,2)
+            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
             .toFormatter();
     private Lock lock = new ReentrantLock();
 
@@ -55,7 +55,7 @@ public class Logger implements Loggable {
             } finally {
                 lock.unlock();
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e);
             return false;
         }
