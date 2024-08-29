@@ -1,14 +1,14 @@
 package entities;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
     private int port = -1;
-    private String clientName = null;
     private Socket client = null;
+    private PrintWriter out = null;
+    private BufferedReader in = null;
+    private String clientName = null;
 
     public boolean readPort(String settingsFile) {
         if (settingsFile.isEmpty() || settingsFile == null) {
@@ -38,13 +38,48 @@ public class Client {
         if (port == -1) {
             return false;
         }
+        if (client != null) {
+            return false;
+        }
         try {
             client = new Socket(host, port);
+            out = new PrintWriter(client.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             System.out.println("You are connected!");
             return true;
         } catch (IOException e) {
             System.err.println(e);
             return false;
         }
+    }
+
+    public boolean setClientName(String clientName) {
+        this.clientName = clientName;
+        return true;
+    }
+
+    public boolean send(String msg) {
+        if (out == null) {
+            return false;
+        }
+        out.println(msg);
+        out.flush();
+        return true;
+    }
+
+    public Socket getClient() {
+        return client;
+    }
+
+    public BufferedReader getIn() {
+        return in;
+    }
+
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    public String getClientName() {
+        return clientName;
     }
 }
