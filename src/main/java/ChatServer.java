@@ -37,6 +37,7 @@ public class ChatServer {
                                 new PrintWriter(client.getOutputStream(),
                                         true));
                         clientLogger.log("/connect");
+                        System.out.println(userName + " is connected!");
                         server.sendToAll(users, userName + ": connect!");
                     }
                     communication(client, userName, clientLogger);
@@ -56,6 +57,7 @@ public class ChatServer {
         } else {
             String name;
             out.println("Enter your name: ");
+            out.flush();
             if (in.ready()) {
                 name = in.readLine();
                 if (name.equalsIgnoreCase(EXIT)) {
@@ -65,8 +67,11 @@ public class ChatServer {
                 for (String user : users.keySet()) {
                     if (user.equalsIgnoreCase(name)) {
                         out.println("This name is taken!");
+                        out.flush();
                         name = setName(server.getClient(), logger);
                     }
+                    out.println("Welcome " + name);
+                    out.flush();
                     logger.setName(name);
                     return name;
                 }
@@ -76,12 +81,10 @@ public class ChatServer {
     }
 
     private static void userIsOut(Socket client, String user, Logger logger) throws IOException {
-        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(client.getInputStream()));
         server.sendToAll(users, user +
                 ": disconnect");
         logger.log("/disconnect");
+        System.out.println(user + " is disconnected!");
         for (String name : users.keySet()) {
             if (name.equalsIgnoreCase(user)) {
                 users.remove(user);

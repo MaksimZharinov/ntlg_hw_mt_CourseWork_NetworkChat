@@ -37,8 +37,8 @@ public class ChatClient_2 {
                         break;
                     }
                     if (in.ready()) {
-                        String messFormServer = in.readLine();
-                        System.out.println(messFormServer);
+                        String response = in.readLine();
+                        System.out.println(response);
                     }
                 }
             } catch (IOException e) {
@@ -49,15 +49,17 @@ public class ChatClient_2 {
         new Thread(() -> {
             while (true) {
                 if (keyboard.hasNext()) {
-                    String mess = keyboard.nextLine();
-                    if (mess.equalsIgnoreCase(EXIT)) {
-                        out.println(mess);
+                    String msg = keyboard.nextLine();
+                    if (msg.equalsIgnoreCase(EXIT)) {
+                        out.println(msg);
+                        out.flush();
                         keyboard.close();
                         out.close();
                         flag.set(false);
                         break;
                     }
-                    out.println(mess);
+                    out.println(msg);
+                    out.flush();
                 }
             }
         }).start();
