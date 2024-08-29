@@ -76,9 +76,9 @@ public class ChatServer {
     }
 
     private static void userIsOut(Socket client, String user, Logger logger) throws IOException {
-            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(client.getInputStream()));
+        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(client.getInputStream()));
         server.sendToAll(users, user +
                 ": disconnect");
         logger.log("/disconnect");
@@ -91,7 +91,6 @@ public class ChatServer {
     }
 
     private static void communication(Socket client, String user, Logger logger) throws IOException {
-        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(client.getInputStream()));
         while (true) {
