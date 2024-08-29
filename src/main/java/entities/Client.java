@@ -34,7 +34,7 @@ public class Client {
         }
     }
 
-    public boolean startClient(String host) {
+    public boolean connect(String host) {
         if (port == -1) {
             return false;
         }
@@ -45,7 +45,8 @@ public class Client {
             client = new Socket(host, port);
             out = new PrintWriter(client.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            System.out.println("You are connected!");
+            System.out.println("You are connected! Host: " +
+                    host + " Port: " + port);
             return true;
         } catch (IOException e) {
             System.err.println(e);
@@ -60,11 +61,29 @@ public class Client {
 
     public boolean send(String msg) {
         if (out == null) {
+            System.out.println("Client didn't connect");
             return false;
         }
         out.println(msg);
         out.flush();
         return true;
+    }
+
+    public boolean closeClient() {
+        if (client == null) {
+            System.out.println("Client didn't connect");
+            return true;
+        } else {
+            try {
+                System.out.println("Disconnect!");
+                in.close();
+                client.close();
+                return true;
+            } catch (IOException e) {
+                System.err.println(e);
+                return false;
+            }
+        }
     }
 
     public Socket getClient() {

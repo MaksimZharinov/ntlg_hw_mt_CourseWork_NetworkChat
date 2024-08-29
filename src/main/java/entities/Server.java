@@ -92,6 +92,7 @@ public class Server {
     public boolean closeClient() {
         if (client != null) {
             try {
+                System.out.println("Client disconnected!");
                 client.close();
                 return true;
             } catch (IOException e) {
@@ -107,6 +108,7 @@ public class Server {
     public boolean closeServer() {
         if (server != null) {
             try {
+                System.out.println("Server closed!");
                 server.close();
                 return true;
             } catch (IOException e) {
