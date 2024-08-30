@@ -8,16 +8,25 @@ import java.util.Scanner;
 
 public class Server {
 
+    private static final String LOGFILE_PATH = "src/main/resources/logfile.txt";
+    private static final String SETTINGS_PATH = "src/main/resources/settings.txt";
+    private static final String EXIT = "/exit";
+    private static final String SET_NAME = "/set_name";
     private static Map<Integer, User> users = new HashMap<>();
+    private static Logger logger = new Logger(LOGFILE_PATH);
+    private static SettingsManager settingsManager = new SettingsManager(SETTINGS_PATH);
 
     public static void main(String[] args) {
-        System.out.println("Start server");
-        int port = 8090;
+        int port = settingsManager.readPort();
+        System.out.println("Start server in port: " + port);
+        logger.log("SERVER", "Start server in port: " + port);
+
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 try {
                     Socket clientSocket = serverSocket.accept();
+                    logger.log("SERVER", "New user is connected: " + clientSocket.getPort());
                     sendMessToAll("New user is connected: " + clientSocket.getPort());
                     new Thread(() -> {
                         try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) { // ����� ������ � �����
@@ -54,16 +63,41 @@ public class Server {
     public static void waitMessAndSend(Socket clientSocket) {
         try (Scanner inMess = new Scanner(clientSocket.getInputStream())) {
             while (true) {
+                int port = clientSocket.getPort();
+                User user = users.get(port);
+                if (user == null) break;
+                String name = user.getName();
+                if (name == null) {
+                    name = Integer.toString(port);
+                }
                 if (inMess.hasNext()) {
                     String mess = inMess.nextLine();
                     switch (mess) {
+                        case EXIT:
+                            for (Integer key : users.keySet()) {
+                                if (port == key) {
+                                    users.remove(port);
+                                    logger.log(name, "has disconnect");
+                                    sendMessToAll(name + " has disconnect!");
+                                }
+                            }
+                            break;
+                        case SET_NAME:
+                            if (inMess.hasNext()) {
+                                String selectName = inMess.nextLine();
+                                user.setName(selectName);
+                                logger.log(name, " select name: " + selectName);
+                                sendMessToAll(name + " select name: " + selectName);
+                            }
+                            break;
                         default:
-                            sendMessToAll(clientSocket.getPort() + ": " + mess);
+                            logger.log(name, mess);
+                            sendMessToAll(name + ": " + mess);
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e);
         }
     }
 }
