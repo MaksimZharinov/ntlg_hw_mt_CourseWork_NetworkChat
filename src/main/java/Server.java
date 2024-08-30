@@ -26,10 +26,14 @@ public class Server {
             while (true) {
                 try {
                     Socket clientSocket = serverSocket.accept();
-                    logger.log("SERVER", "New user is connected: " + clientSocket.getPort());
-                    sendMessToAll("New user is connected: " + clientSocket.getPort());
+                    logger.log("SERVER", "New user is connected: " +
+                            clientSocket.getPort());
+                    sendMessToAll("New user is connected: " +
+                            clientSocket.getPort());
                     new Thread(() -> {
-                        try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) { // ����� ������ � �����
+                        try (PrintWriter out = new PrintWriter(
+                                clientSocket.getOutputStream(),
+                                true)) {
                             User user = new User(clientSocket, out);
                             users.put(clientSocket.getPort(), user);
                             System.out.println(user);
@@ -86,8 +90,10 @@ public class Server {
                             if (inMess.hasNext()) {
                                 String selectName = inMess.nextLine();
                                 user.setName(selectName);
-                                logger.log(name, " select name: " + selectName);
-                                sendMessToAll(name + " select name: " + selectName);
+                                logger.log(name, " select name: " +
+                                        selectName);
+                                sendMessToAll(name + " select name: " +
+                                        selectName);
                             }
                             break;
                         default:
