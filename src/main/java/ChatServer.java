@@ -30,19 +30,21 @@ public class ChatServer {
             Logger clientLogger = new Logger(LOG_FILE);
             client = server.getClient();
             new Thread(() -> {
-                try {
-                    String userName = setName(client, clientLogger);
-                    if (userName != null) {
-                        users.put(userName,
-                                new PrintWriter(client.getOutputStream(),
-                                        true));
-                        clientLogger.log("/connect");
-                        System.out.println(userName + " is connected!");
-                        server.sendToAll(users, userName + ": connect!");
+                while (true) {
+                    try {
+                        String userName = setName(client, clientLogger);
+                        if (userName != null) {
+                            users.put(userName,
+                                    new PrintWriter(client.getOutputStream(),
+                                            true));
+                            clientLogger.log("/connect");
+                            System.out.println(userName + " is connected!");
+                            server.sendToAll(users, userName + ": connect!");
+                        }
+                        communication(client, userName, clientLogger);
+                    } catch (IOException e) {
+                        System.err.println(e);
                     }
-                    communication(client, userName, clientLogger);
-                } catch (IOException e) {
-                    System.err.println(e);
                 }
             }).start();
         }
