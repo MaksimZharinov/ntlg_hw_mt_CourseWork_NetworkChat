@@ -1,2 +1,12 @@
-30.08.2024 16:25 SERVER: Start server in port: 8888
-30.08.2024 16:26 SERVER: New user is connected: 57658
+16.09.2024 08:59 SERVER: Start server in port: 8888
+16.09.2024 08:59 SERVER: New user is connected: 54023
+16.09.2024 09:00 SERVER: New user is connected: 54028
+16.09.2024 09:00 54028:  select name: Max
+16.09.2024 09:00 Max: hi!
+16.09.2024 09:00 54023:  select name: Viki
+16.09.2024 09:01 Viki: qq
+16.09.2024 09:01 Max: whatsup!
+16.09.2024 09:01 Viki: how do you do
+16.09.2024 09:02 Max: bb
+16.09.2024 09:02 Max: has disconnect
+16.09.2024 09:02 Viki: has disconnect
