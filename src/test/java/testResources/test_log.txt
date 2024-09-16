@@ -1,4 +1,0 @@
-null 23.08.2024 08:38: test message
-28.08.2024 06:46 test_log: test_message
-28.08.2024 06:49 null: test_message
-28.08.2024 06:50 default_name: test_message

@@ -1,2 +1,0 @@
-30.08.2024 16:25 SERVER: Start server in port: 8888
-30.08.2024 16:26 SERVER: New user is connected: 57658
